@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My TV App</title>
 
+  <style>
+    body {
+      margin: 0;
+      background: #141414;
+      color: white;
+      font-family: Arial;
+    }
+
+    h1 {
+      padding: 20px;
+    }
+
+    .row {
+      margin-left: 20px;
+    }
+
+    .movies {
+      display: flex;
+      overflow-x: auto;
+    }
+
+    .movie {
+      min-width: 200px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .movie img {
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    .movie:hover {
+      transform: scale(1.2);
+    }
+
+    #playerContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    video {
+      width: 80%;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎬 My TV</h1>
+
+<div class="row">
+  <h2>Trending</h2>
+  <div class="movies">
+
+    <div class="movie" onclick="play('movie1.mp4')">
+      <img src="thumb1.jpg">
+    </div>
+
+    <div class="movie" onclick="play('movie2.mp4')">
+      <img src="thumb2.jpg">
+    </div>
+
+  </div>
+</div>
+
+<div id="playerContainer">
+  <div class="close" onclick="closePlayer()">✖</div>
+  <video id="player" controls></video>
+</div>
+
+<script>
+function play(movie) {
+  const container = document.getElementById("playerContainer");
+  const player = document.getElementById("player");
+
+  player.src = movie;
+  container.style.display = "flex";
+  player.play();
+}
+
+function closePlayer() {
+  const container = document.getElementById("playerContainer");
+  const player = document.getElementById("player");
+
+  player.pause();
+  container.style.display = "none";
+}
+</script>
+
+</body>
+</html>
