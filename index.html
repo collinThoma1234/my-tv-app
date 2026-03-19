@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>My TV App</title>
+
   <style>
     body {
       margin: 0;
@@ -50,11 +51,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-    }
-
-    video {
-      width: 80%;
-      max-height: 80%;
+      z-index: 999;
     }
 
     .close {
@@ -65,52 +62,77 @@
       cursor: pointer;
       z-index: 10;
     }
+
+    video, iframe {
+      width: 80%;
+      max-height: 80%;
+    }
   </style>
 </head>
+
 <body>
 
 <h1>🎬 My TV</h1>
 
 <div class="row">
   <h2>Trending</h2>
+
   <div class="movies">
-    <!-- Large video from Google Drive -->
-    <div class="movie" onclick="play('https://drive.google.com/uc?export=download&id=1nEamW8-hMLfxVwiVaAKGYa8U6EpWYqrL')">
+
+    <!-- YOUR GOOGLE DRIVE VIDEO -->
+    <div class="movie" onclick="play('drive:1nEamW8-hMLfxVwiVaAKGYa8U6EpWYqrL')">
       <img src="thumb1.jpg">
       <p>My Big Movie</p>
     </div>
 
-    <!-- Another large video from Dropbox -->
-    <div class="movie" onclick="play('https://www.dropbox.com/s/YOUR_DROPBOX_ID/movie.mp4?raw=1')">
+    <!-- OPTIONAL: DIRECT MP4 (Dropbox etc) -->
+    <div class="movie" onclick="play('https://www.dropbox.com/s/YOUR_ID/movie.mp4?raw=1')">
       <img src="thumb2.jpg">
       <p>Another Movie</p>
     </div>
+
   </div>
 </div>
 
-<!-- VIDEO PLAYER -->
+<!-- PLAYER -->
 <div id="playerContainer">
   <div class="close" onclick="closePlayer()">✖</div>
-  <video id="player" controls></video>
+  <div id="player"></div>
 </div>
 
 <script>
-function play(fileURL) {
+function play(source) {
   const container = document.getElementById("playerContainer");
   const player = document.getElementById("player");
 
-  player.src = fileURL;
+  // GOOGLE DRIVE
+  if (source.startsWith("drive:")) {
+    const fileId = source.replace("drive:", "");
+
+    player.innerHTML = `
+      <iframe 
+        src="https://drive.google.com/file/d/1nEamW8-hMLfxVwiVaAKGYa8U6EpWYqrL/view?usp=drive_link"
+        allow="autoplay"
+        allowfullscreen>
+      </iframe>
+    `;
+  }
+
+  // NORMAL MP4
+  else {
+    player.innerHTML = `
+      <video controls autoplay>
+        <source src="${source}" type="video/mp4">
+      </video>
+    `;
+  }
+
   container.style.display = "flex";
-  player.play();
 }
 
 function closePlayer() {
-  const container = document.getElementById("playerContainer");
-  const player = document.getElementById("player");
-
-  player.pause();
-  container.style.display = "none";
-  player.src = ""; // Stop video completely
+  document.getElementById("playerContainer").style.display = "none";
+  document.getElementById("player").innerHTML = "";
 }
 </script>
 
